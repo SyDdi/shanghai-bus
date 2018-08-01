@@ -13,7 +13,7 @@
 | 名称 | 位置 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- | --- |
 | router_name | url | string | 是 | 公交线路名称，如：1路、2路 |
-| direction | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
+| stoptype | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
 
 **返回参数**：
 
@@ -23,7 +23,7 @@
 | to | string | 公交终点站名称 |
 | start_at | string | 首班公交发车时间 |
 | end_at | string | 末班公交发车时间 |
-| direction | int | 公交行驶方向，上行：0，下行：1 |
+| stoptype | int | 公交行驶方向，上行：0，下行：1 |
 | stops | array | 公交站点列表 |
 | stop_id | string | 公交站点的数字代号 |
 | stop_name | string |  公交站点名称 |
@@ -44,14 +44,14 @@
 | --- | --- | --- | --- | --- |
 | router_name | url | string | 是 | 公交线路名称，如：1路、2路 |
 | stop_id | url | int | 是 | 公交站点的数字代号 |
-| direction | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
+| stoptype | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
 
 **返回参数**：
 
 | 名称 | 类型 | 说明 |
 | --- | --- | --- |
 | router_name | string | 公交线路名称 |
-| direction | int | 公交行驶方向，上行：0，下行：1 |
+| stoptype | int | 公交行驶方向，上行：0，下行：1 |
 | plate_number | string | 公交车车牌号 |
 | stop_interval | int | 公交车到达本站的站数 |
 | distance | int | 当前公交车到达本站的距离 |
@@ -73,7 +73,7 @@
 | 名称 | 位置 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- | --- |
 | router_name | url | string | 是 | 公交线路名称，如：1路、2路 |
-| direction | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
+| stoptype | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
 
 **返回参数**：
 
@@ -83,7 +83,7 @@
 | to | string | 公交终点站名称 |
 | start_at | string | 首班公交发车时间 |
 | end_at | string | 末班公交发车时间 |
-| direction | int | 公交行驶方向，上行：0，下行：1 |
+| stoptype | int | 公交行驶方向，上行：0，下行：1 |
 | stops | array | 公交站点列表 |
 | stop_id | string | 公交站点的数字代号 |
 | stop_name | string |  公交站点名称 |

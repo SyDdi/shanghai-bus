@@ -14,30 +14,30 @@ def hello_world():
 
 @app.route('/bus/<router_name>/stop/<stop_id>')
 def query_stop(router_name, stop_id):
-    direction = request.args.get('direction', '0')
+    stoptype = request.args.get('stoptype', '0')
 
     bus = Bus()
-    res = bus.query_stop(router_name, direction, stop_id)
+    res = bus.query_stop(router_name, stoptype, stop_id)
 
     return jsonify(res)
 
 
 @app.route('/bus/<router_name>')
 def query_router(router_name):
-    direction = request.args.get('direction', '0')
+    stoptype = request.args.get('stoptype', '0')
 
     bus = Bus()
-    routers = bus.query_router(router_name, direction)
+    routers = bus.query_router(router_name, stoptype)
 
     return jsonify(routers)
 
 
 @app.route('/bus/<router_name>/details')
 def query_router_details(router_name):
-    direction = request.args.get('direction', '0')
+    stoptype = request.args.get('stoptype', '0')
 
     bus = Bus()
-    router_details = bus.query_router_details(router_name, direction)
+    router_details = bus.query_router_details(router_name, stoptype)
 
     return jsonify(router_details)
 

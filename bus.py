@@ -38,15 +38,15 @@ class Bus:
 
         return sid
 
-    def _query_router_details_page(self, sid, direction='0'):
+    def _query_router_details_page(self, sid, stoptype='0'):
         self.headers['Referer'] = self.query_router_url
-        url = self.query_router_details_url + sid + '/stoptype/' + direction
+        url = self.query_router_details_url + sid + '/stoptype/' + stoptype
         r = self.s.get(url, headers=self.headers)
 
         return r
 
-    def _query_stop(self, sid, direction, stop_id):
-        data = {'stoptype': direction, 'stopid': stop_id, 'sid': sid}
+    def _query_stop(self, sid, stoptype, stop_id):
+        data = {'stoptype': stoptype, 'stopid': stop_id, 'sid': sid}
         self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         self.headers['Referer'] = self.query_router_details_url
 
@@ -97,18 +97,18 @@ class Bus:
         if router_name not in Routers:
             raise InvalidParameterException('router_not_exists', '不存在该公交线路', 400)
 
-    def query_stop(self, router_name, direction, stop_id):
+    def query_stop(self, router_name, stoptype, stop_id):
         sid = self._init_request(router_name)
 
         # 查询公交到站信息
-        r = self._query_stop(sid, direction, stop_id)
+        r = self._query_stop(sid, stoptype, stop_id)
 
         res = r.json()
         if type(res) is list:
             res = res[0]
             return {
                 'router_name': res['@attributes']['cod'],
-                'direction': direction,
+                'stoptype': stoptype,
                 'plate_number': res['terminal'],
                 'stop_interval': res['stopdis'],
                 'distance': res['distance'],
@@ -118,7 +118,7 @@ class Bus:
         else:
             return {
                 'router_name': router_name,
-                'direction': direction,
+                'stoptype': stoptype,
                 'plate_number': '',
                 'stop_interval': '',
                 'distance': '',
@@ -126,15 +126,15 @@ class Bus:
                 'status': 'waiting'
             }
 
-    def query_router(self, router_name, direction='0'):
+    def query_router(self, router_name, stoptype='0'):
         self.sid = self._init_request(router_name)
 
         # 进入公交线路明细页面
-        r = self._query_router_details_page(self.sid, direction)
+        r = self._query_router_details_page(self.sid, stoptype)
 
         soup = BeautifulSoup(r.text.encode(r.encoding), 'lxml')
 
-        if direction == '0':
+        if stoptype == '0':
             stations = soup.select('div.upgoing.cur span')
             from_station = stations[0].string
             to_station = stations[1].string
@@ -166,18 +166,18 @@ class Bus:
             'to': to_station,
             'start_at': strat_at,
             'end_at': end_at,
-            'direction': direction,
+            'stoptype': stoptype,
             'stops': stops
         }
 
-    def query_router_details(self, router_name, direction='0'):
-        router = self.query_router(router_name, direction)
+    def query_router_details(self, router_name, stoptype='0'):
+        router = self.query_router(router_name, stoptype)
 
         stops = router['stops']
 
         for stop in stops:
             # 查询公交到站信息
-            r = self._query_stop(self.sid, direction, stop['stop_id'])
+            r = self._query_stop(self.sid, stoptype, stop['stop_id'])
 
             res = r.json()
             if type(res) is list:
@@ -198,16 +198,18 @@ class Bus:
 
 
 if __name__ == '__main__':
-    router_name = '406路'
-    direction = '0'
+    router_name = '115路'
+    stoptype = '0'
     stop_id = '4'
 
     bus = Bus()
     stops = bus.query_router(router_name)
     print(stops)
+    print()
 
-    r = bus.query_stop(router_name, direction, stop_id)
+    r = bus.query_stop(router_name, stoptype, stop_id)
+    print(r)
+    print()
+    r = bus.query_router_details(router_name, stoptype)
     print(r)
 
-    r = bus.query_router_details(router_name, direction)
-    print(r)
