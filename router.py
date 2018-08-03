@@ -63,3 +63,6 @@ def handle_invalid_parameter(e):
     response = jsonify(e.to_dict())
     response.status_code = e.status_code
     return response
+
+if __name__ == '__main__':
+    app.run( port=8080)
